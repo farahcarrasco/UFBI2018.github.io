@@ -18,11 +18,15 @@ If you have a Mac, you may require a few other programs to run ClimNA, which is 
 
 ## Climate data resources overview
 
+We will be using ClimNA as our example for this workshop, which ***only works for occurrences in North America***. Be aware that there are other resources available for **South America** and **Europe**: [https://sites.ualberta.ca/~ahamann/data.html](https://sites.ualberta.ca/~ahamann/data.html).<br>These should have very similar functionalities to what we're learning in the workshop.
+
+**WorldClim** - [http://worldclim.org/](http://worldclim.org/)
+
 ***
 
 ## ClimNA example
 
-You will need to download the data file called "dasypus_novemcinctus_gbif.csv". This is a dataset of hummingbird clearwing moth (*Hemaris thysbe*) occurrences that I downloaded directly from GBIF's website and converted into a .csv file. We will clean it to prepare it for ClimNA using R. First, set your working directory if you have not already and load the required libraries. You will also need to install the R package dismo.
+You will need to download the data file called **dasypus_novemcinctus_gbif.csv**. This is a dataset of hummingbird clearwing moth (*Hemaris thysbe*) occurrences that I downloaded directly from GBIF's website and converted into a .csv file. We will clean it to prepare it for ClimNA using R. First, set your working directory if you have not already and load the required libraries. You will also need to install the R package dismo.
 
 ```{r}
 setwd("~/Desktop/UFBI workshop example/");
@@ -39,6 +43,7 @@ library(readr)
 hemaris_gbif <- read_csv("~/Desktop/UFBI workshop example/Armadillo/dasypus-novemcinctus-gbif.csv")
 View(hemaris_gbif)
 ```
+### Cleaning data for ClimNA
 
 This dataset contains a lot more data than we need for running ClimNA. Let's first transform this into a data frame and extract only the necessary columns necessary: occurrenceID, publishing organization code, latitude, longitude, elevation, and event date.
 
@@ -72,7 +77,16 @@ Next, we will have to do some reformatting because ClimNA is particular about th
 names(unique_data) <- c("ID1", "ID2", "lat", "long", "el", "date")
 View(unique_data)
 ```
-ClimNA is very picky about formatting. Above, we renamed our columns to suit the required formatting: occurrenceID -> ID1, publishingorgkey -> ID2, decimallatitude -> lat, decimallongitude -> long, and elevation -> el. ClimNA itself does not care about or want the eventDate -> date information. However, we will need it for processing post-ClimNA so we will save a copy of these data with the date column intact, then delete this column and save the dataset to be put into ClimNA.
+ClimNA is very picky about formatting. Above, we renamed our columns to suit the required formatting:<br>
+occurrenceID -> ID1<br>
+publishingorgkey -> ID2<br>
+decimallatitude -> lat<br>
+decimallongitude -> long<br>
+elevation -> el<br>
+
+The two ID fields are important if you want to go back to the larger spreadsheet that we cleaned to view or verify the rest of the associated information with the specimens you are using in your analysis.
+
+ClimNA itself does not care about or want the eventDate -> date information. However, we will need it for processing post-ClimNA so we will save a copy of these data with the date column intact, then delete this column and save the dataset to be put into ClimNA.
 
 ```{r}
 write.csv(unique_data, "Hemaris-clean-dates.csv", row.names = F)
@@ -80,3 +94,22 @@ unique_data$date <- NULL
 View(unique_data)
 write.csv(unique_data, "Hemaris-ClimNA.csv", row.names = F)
 ```
+### Running ClimNA
+
+Now we are actually ready to run the ClimNA program with the data we've cleaned. Open the **ClimateNA_v5.21.exe** file on your computer. If you have a Mac and have not installed Wine or the other necessary programs to run this Windows program, see at the top of this page because you will experience difficulties at this step. **This is why it is important to do this BEFORE coming to the workshop!** Otherwise, we will waste time troubleshooting Wine installation.
+
+At this step, it is important to open the **Hemaris-clean-dates.csv** file to check when our occurrences come from. For our particular example, the occurrences range from 1969 to 2017. Unfortunately, ClimNA only has data up until 2013. For simplicity's sake, it is probably best to delete the two occurrences that fall outside of ClimNA's range (shown highlighted in the image below).
+
+<img src="https://lh3.googleusercontent.com/ffl5mW_x-L399HY3xu70OPznF_WGLqbnoCUflALsn0Ndxvt42_J_Fw5dnaku0Mg4BqG1N4mrJAqxQC9qPpjFhjGJqSoP3qcDebbh72L5ye3ed40AiX9r8TiZhzMtL3B_l1MFNp6IxVMeVEwJzeywCZYUhVFhgaM12ika89zGrLZLqKJ1pOW4btexYrFFIY_Llmqu9uBaVsoFgofgjPpdTXpjtZhp_L4PCk-BGlgP26gq1pcyPNk4Hj92hATpE3XYVk4JvUqK9Il6h9hjULrma3A4JyAwkzu1J2HYIYqLJYXzaxVv5Qg9Kp3RNLhGYFCV-VoUr1RcMqwP7vkfd_AsfIbVgsXkdMU-ukr8JYz5tkjBX3x9c1KujY0kkk-k8awKxZMHFnqIzMv3J2VQ_8f-3NEL0Dr0AtkbLF3sTuNANEZMRQyn7hWvR7AsFTKQhUvonhnuFM18TcevB7Yyfj9hKahbPjE68JcNQ4QuOPvYFI2O48SXJD8G-Xxw1Pfz0POU3A0yqMWsPD3gQyOL7ll6Ay-fZAVobcwdyV4tKmvrhUyXOXgTumjRub-joR3YLIuWWatJTgILINlYzHZcUIv0oFJn08rUYnM9Dpp1oRM=w934-h592-no" width="550" height="330"/>
+
+Note the ID1 and ID2 for these records, and delete them from the **Hemaris-ClimNA.csv** file and save it. You will need to save a blank spreadsheet as a .csv file for your output from ClimNA. Fill out the ClimNA interface with the appropriate input, output, and year range. We will discuss more about these options in the workshop. Click "Calculate TS".
+
+<img src="https://lh3.googleusercontent.com/49r0_aaufHLwBoCIbDYxIicobpLoRV1kl48k8rEt3hAUe0YkVYFuvDgiL9o3Y1Bz2ydPZ7t72xEvir56SyGjwQU_ppz-5x_PqHo5qFKiVk7zoXbBspPf4osF4JYxnCspfx9oBmst5RcOYuVruHvsuFKVvqKY_cgewQf6JSKA6MUP55ufSxCRiR-of2J5-LgqeMCEkcGZdinOxAF_HwBYmnzTdFwKxxn0jKbOWMb_HR3D1QL__CAPqe1aEbj_i0lKxNOofQMXPLTBQFDykAGSpGGv8NSvunwp_2ZFOtydTf9Yf6jD7dS7ASdV27GB3f7OD8v1e8RuHPrBDc9Fwq96P5N93p_oXRhc8Ict4wjPj0yOB9zxQVe_AvOTnjljKjGNa5i_FhbZ2qXCDfvKbOVo-Yjg5bkD5bAY837QEiGJv3wWOO6eDEumcv25Gs9EkEDzHrOjFuoSoy2ybuI2hCDoh3VSoalSBMu24uSgyI574H2aVPI6hNoxPbGUWnrggypD_A3pNPN-6FfjnQkylCAxdfMdp1oDbsh2ZalAWi-q2Ib0D-_SLL_8nEBi2YQJ1gUMD8FEc4aOXjJTG6SZJVS-J0v_097pg_OVcuayPrA=w1130-h1134-no" width="430" height="450"/>
+
+If you open your output file, it should now have data in it. Because we ran these as a time series, you'll notice that all of our occurrences now have a row of data with each variable from ClimNA for every month of every year from 1969-2013. The definitions of these annual climate variables can be found in the **help.rtf** ClimNA file.
+
+<img src="https://lh3.googleusercontent.com/jd7eNxuHlll_w9iCvH3AgcJupWeXPxx5uZMdei5ObPIKug3pV0XgBXyBsvrGyfnq_gSzGqzHOh-rOGv4bu64iwLxRV1BepvoAwnLpBGfFs_EHgBoaW2-443uU45sadreRakMk6WSNf31rVGeZ60_dWcGl_Kty0-bF2AUNmpG9ZrCou8qlqpmvpyd4WR4lLj1fwyq9CNWK_Ez4IPA7hLHjiUErf0EFMSp8881p6ruvbxaIG7K_8zo1rD7WoYznv8MW0AItq-8wHPCVh2rO6yP5zAbNB9zJnkiE2j_1ggGXwjLgJrLiaEWQe02sNQAPkMtk4v2bg0DGOJ9e3CNS5g9kkm8RPAafGuRY9nyVpEx_9OYfXWEmsXWhhkoUsvN5ujzvKo9nHkZiV8MDV3Kba9KJNTXqDF_oTTb14VL5pH41yjiHnlKEYAYIs-EWP4i0en0xgUWtb9a5i9HTrZBgSlU3NnoR62mJegmxSyqZVl9kvUIjvCoS3KZnNnJs39xwogL8WiNjnZv9uE_pZC8vbafr7v5x6njkZ1wmZfNEy6jiQTC4sDua9I_pHpt5Q9QI-LN_JLm-CByONtDT8ZlPn3oGQetnrfUWasZIXdINLg=w842-h672-no" width="510" height="480"/>
+
+### Cleaning the ClimNA output
+
+Really, we only need the associated climate data from the year that the occurrence was recorded. In order to keep this example simple, we will only pull the MAT (mean annual temperature) and MAP (mean annual precipitation) for the year we need, and then we will use the biovars function to create climate variables from the data we have.
