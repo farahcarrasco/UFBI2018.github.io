@@ -39,8 +39,8 @@ library(dismo);
 Load the dataset you downloaded into R.
 
 ```{r}
-library(readr)
-hemaris_gbif <- read_csv("~/Desktop/UFBI workshop example/Armadillo/dasypus-novemcinctus-gbif.csv")
+library(readxl)
+hemaris_gbif <- read_excel("~/Desktop/UFBI workshop example/hemaris_thysbe-gbif.xlsx")
 View(hemaris_gbif)
 ```
 ### Cleaning data for ClimNA
@@ -98,18 +98,46 @@ write.csv(unique_data, "Hemaris-ClimNA.csv", row.names = F)
 
 Now we are actually ready to run the ClimNA program with the data we've cleaned. Open the **ClimateNA_v5.21.exe** file on your computer. If you have a Mac and have not installed Wine or the other necessary programs to run this Windows program, see at the top of this page because you will experience difficulties at this step. **This is why it is important to do this BEFORE coming to the workshop!** Otherwise, we will waste time troubleshooting Wine installation.
 
-At this step, it is important to open the **Hemaris-clean-dates.csv** file to check when our occurrences come from. For our particular example, the occurrences range from 1969 to 2017. Unfortunately, ClimNA only has data up until 2013. For simplicity's sake, it is probably best to delete the two occurrences that fall outside of ClimNA's range (shown highlighted in the image below).
+At this step, it is important to open the **Hemaris-clean-dates.csv** file to check when our occurrences come from. For our particular example, the occurrences range from 1969 to 2017. Unfortunately, ClimNA only has data up until 2013. For simplicity's sake, it is best to delete the two occurrences that fall outside of ClimNA's range (shown highlighted in the image below).
 
-<img src="https://lh3.googleusercontent.com/ffl5mW_x-L399HY3xu70OPznF_WGLqbnoCUflALsn0Ndxvt42_J_Fw5dnaku0Mg4BqG1N4mrJAqxQC9qPpjFhjGJqSoP3qcDebbh72L5ye3ed40AiX9r8TiZhzMtL3B_l1MFNp6IxVMeVEwJzeywCZYUhVFhgaM12ika89zGrLZLqKJ1pOW4btexYrFFIY_Llmqu9uBaVsoFgofgjPpdTXpjtZhp_L4PCk-BGlgP26gq1pcyPNk4Hj92hATpE3XYVk4JvUqK9Il6h9hjULrma3A4JyAwkzu1J2HYIYqLJYXzaxVv5Qg9Kp3RNLhGYFCV-VoUr1RcMqwP7vkfd_AsfIbVgsXkdMU-ukr8JYz5tkjBX3x9c1KujY0kkk-k8awKxZMHFnqIzMv3J2VQ_8f-3NEL0Dr0AtkbLF3sTuNANEZMRQyn7hWvR7AsFTKQhUvonhnuFM18TcevB7Yyfj9hKahbPjE68JcNQ4QuOPvYFI2O48SXJD8G-Xxw1Pfz0POU3A0yqMWsPD3gQyOL7ll6Ay-fZAVobcwdyV4tKmvrhUyXOXgTumjRub-joR3YLIuWWatJTgILINlYzHZcUIv0oFJn08rUYnM9Dpp1oRM=w934-h592-no" width="550" height="330"/>
+<img src="https://lh3.googleusercontent.com/UOmsIJlNdTqS11s8StRXy6y2ko57K1_QEixSPxBy_218U_58fJ1DnH7o4MyZodqnmj5oEm2F4i3m_2-t5FjLj_CaYXSRczKcHxAW9r4kZJHa4OzEsTPMcZjoqMNAKKWsy9-OBjZGI7rA4Ufi_0U5Obe-7s6mALNMpcWNLmGPURYvqoXYwHONscxM-YQcKqdqYGKXry38boVMo9ajCCLcLZSGIzZWM5SRwO2kM7jNImWftUv8WaIskPWpHv2Dh8Pk52Tet8AaDR2YpdKO3Q0AwdL3n6VWifxBooVSTqBNXjk9KG82JfcCAr9prqA-dO6cWSRE6N0hjkIQoNp77GRzyoqK6f7id3QfEuzSDRJpJbioDRaMZKTY5CnStqDRET3AENPS6lgp7fIzGJYKOHQnVXhTYcyNT-ewI8lqlBLRPM4CfhR1HRWb7E1amriJF0iYt4fMPzeSrZdFsF6-3rcL6H51SKgd6OIJ4cNSrSSygQyvKanAgwn-OhL_iBrnkKR2OC7G9t82RpccCT-i0kAqXRJslO02Ppmi9HW-D9kZITng8LZ0EOG9l0ogelCax_2V1f3WeplM2-Qx_7IRgV2x-JJDQEdPW6kGa7YVBZI=w1130-h1134-no" width="550" height="330"/>
 
 Note the ID1 and ID2 for these records, and delete them from the **Hemaris-ClimNA.csv** file and save it. You will need to save a blank spreadsheet as a .csv file for your output from ClimNA. Fill out the ClimNA interface with the appropriate input, output, and year range. We will discuss more about these options in the workshop. Click "Calculate TS".
 
-<img src="https://lh3.googleusercontent.com/49r0_aaufHLwBoCIbDYxIicobpLoRV1kl48k8rEt3hAUe0YkVYFuvDgiL9o3Y1Bz2ydPZ7t72xEvir56SyGjwQU_ppz-5x_PqHo5qFKiVk7zoXbBspPf4osF4JYxnCspfx9oBmst5RcOYuVruHvsuFKVvqKY_cgewQf6JSKA6MUP55ufSxCRiR-of2J5-LgqeMCEkcGZdinOxAF_HwBYmnzTdFwKxxn0jKbOWMb_HR3D1QL__CAPqe1aEbj_i0lKxNOofQMXPLTBQFDykAGSpGGv8NSvunwp_2ZFOtydTf9Yf6jD7dS7ASdV27GB3f7OD8v1e8RuHPrBDc9Fwq96P5N93p_oXRhc8Ict4wjPj0yOB9zxQVe_AvOTnjljKjGNa5i_FhbZ2qXCDfvKbOVo-Yjg5bkD5bAY837QEiGJv3wWOO6eDEumcv25Gs9EkEDzHrOjFuoSoy2ybuI2hCDoh3VSoalSBMu24uSgyI574H2aVPI6hNoxPbGUWnrggypD_A3pNPN-6FfjnQkylCAxdfMdp1oDbsh2ZalAWi-q2Ib0D-_SLL_8nEBi2YQJ1gUMD8FEc4aOXjJTG6SZJVS-J0v_097pg_OVcuayPrA=w1130-h1134-no" width="430" height="450"/>
+<img src="https://lh3.googleusercontent.com/ZHs7WN852ouV-Wme6ZJl6FraQWwjlZ4OIBwwgLtrdiWZYa25-CHQMxFQHe1aPJCGPB_prpOKLcSPVA0sR3fg-zmivgdKAGjPkh4r-YkysX2wkHUz3NF8GGxNQIfgdkmGtaiK6NVcROENF5ll2OhUrIqWxa3bHr7YY4NPmJejs9F6lOeWne-3J_Phm8xcxq08Q3faBIXoPl5o6mLuDa3Gn_tSb_-ivn6qgstxrOrr7D-hL189d7wDA-Q9bzdDMmaLNaLt0NxVDdZmC5Fo0hFJ7jW7cce_gGlRSo4-xbv0_XeuNz0IpyxIaYO9KyW4209dNVOUUCWLNvxLFwaRN8XPvcNrSO2MUhuuJBwh5dg6Sj3YquvWTBxcHjB7O8kfVCcRg6vIZjKkYs9AqGV5H4WeJo-mRo5UVJZd2fwsFpk9bkjAhd33vDu_maG6pZJZoKlXXrE5y4rxrVJBSSjqWFY_ob_fPjhr7HWRBb1437RatLogM5Sk-_LK0uMiv3NUh7kaGCGxQ4zAXoFfDDOYx-SkcSxRYtNcMcEu9Bat3BSd_-YC1jtMjWQn8-mVEBXo05PcZqVOT3hpehKFygsxe129c1zXsxfDKW8X6SpO9uE=w934-h592-no" width="430" height="450">
 
-If you open your output file, it should now have data in it. Because we ran these as a time series, you'll notice that all of our occurrences now have a row of data with each variable from ClimNA for every month of every year from 1969-2013. The definitions of these annual climate variables can be found in the **help.rtf** ClimNA file.
+If you open your output file, it should now have data in it. Because we ran these as a time series, you'll notice that all of our occurrences now have a row of data with each variable from ClimNA for every month of every year from 1969-2013. The definitions of these climate variables can be found in the **help.rtf** ClimNA file.
 
-<img src="https://lh3.googleusercontent.com/jd7eNxuHlll_w9iCvH3AgcJupWeXPxx5uZMdei5ObPIKug3pV0XgBXyBsvrGyfnq_gSzGqzHOh-rOGv4bu64iwLxRV1BepvoAwnLpBGfFs_EHgBoaW2-443uU45sadreRakMk6WSNf31rVGeZ60_dWcGl_Kty0-bF2AUNmpG9ZrCou8qlqpmvpyd4WR4lLj1fwyq9CNWK_Ez4IPA7hLHjiUErf0EFMSp8881p6ruvbxaIG7K_8zo1rD7WoYznv8MW0AItq-8wHPCVh2rO6yP5zAbNB9zJnkiE2j_1ggGXwjLgJrLiaEWQe02sNQAPkMtk4v2bg0DGOJ9e3CNS5g9kkm8RPAafGuRY9nyVpEx_9OYfXWEmsXWhhkoUsvN5ujzvKo9nHkZiV8MDV3Kba9KJNTXqDF_oTTb14VL5pH41yjiHnlKEYAYIs-EWP4i0en0xgUWtb9a5i9HTrZBgSlU3NnoR62mJegmxSyqZVl9kvUIjvCoS3KZnNnJs39xwogL8WiNjnZv9uE_pZC8vbafr7v5x6njkZ1wmZfNEy6jiQTC4sDua9I_pHpt5Q9QI-LN_JLm-CByONtDT8ZlPn3oGQetnrfUWasZIXdINLg=w842-h672-no" width="510" height="480"/>
+<img src="https://lh3.googleusercontent.com/qWuMndfkpCVQ1SEGbAs93RN7nH2AjWdBhR_0SoA7YX-rVlf9gmj7xM965HN_SwNp5MZrvI4SdCyjjB6BbXws12FZNFy27OZCxWZz9lYUjVVums-lC_JnQAUq_XshXL4aPB9IzLMqLKPHABL28z8VdMVauH7dS3AsBYPUelfvM1g5avDhAZc3rbiSd3u_kqhrn9M3eL3MBSdXYixOivd2flxDXjiLKwEQqeBEfp6OlMtUjaez8AfnPTcnMQZ9v4LvAgQoOVvVAPkOtIWZyDa4z--PlVaegQN7771o8fy74pLKvT8M5YMkb5gzmWqgGB9rTlmf551Y1VHjrxZ3KTU_A7MrsUJ8kUawnCCQc_i3i32WUkzxLjVFZJN3rQUUBBNaTHFZ3Stk5B88zAdocZ8XjVG0gS0qlBYu7eJmfvwd3FBVTRQQDrltmZ-M4WN9LQEFjq8qqQ3b2WhwAaRn_wDlLgXtagppwOJ5lKKh3Il5Y_clYtAuZ5MhlMqaR4FB2m-FItAnRg1WDF7yFHZfSmera9HAxAarCqAvEzv6yhnlicVKfse2A4-rnbqRTmeQtSVU86P908FNO7-WZPf_cjTyRIG4Uo2cL5Bn3NHmX4g=w842-h672-no" width="510" height="480">
 
 ### Cleaning the ClimNA output
 
-Really, we only need the associated climate data from the year that the occurrence was recorded. In order to keep this example simple, we will only pull the MAT (mean annual temperature) and MAP (mean annual precipitation) for the year we need, and then we will use the biovars function to create climate variables from the data we have.
+Really, we only need the associated climate data from the year that the occurrence was recorded. In order to keep this example simple, we will only pull the average temperature for each month for the year we need, and then we will use the biovars function to create climate variables from the data we have.
+
+```{r}
+all_data <- read.csv("hemaris-output-monthly.csv")
+clean_dates <- read.csv("Hemaris-clean-dates.csv")
+```
+Somehow ClimNA managed to garble some of observational data's identification codes. We'll fix that because we need them to be the same to match between the output and the spreadsheet with the dates.
+
+```{r}
+levels(all_data$ID1)[levels(all_data$ID1)=="2.7E+67"] <- "27e66ae6-7b71-4f15-bd0e-052a9cf67afa"
+levels(all_data$ID1)[levels(all_data$ID1)=="8"] <- "08BBLEP-01675"
+all_data$ID1 <- as.character(all_data$ID1)
+all_data$ID1[all_data$ID1 == "10" & all_data$Elevation == "1146"] <- "10BBCLP-0319"
+all_data$ID1[all_data$ID1 == "10" & all_data$Elevation == "1137"] <- "10BBCLP-0320"
+```
+
+Next, we'll normalize the dates to make a separate year column.
+
+```{r}
+clean_dates$year <- format(as.Date(clean_dates$date, format = "%Y-%m-%d"), "%Y")
+```
+Next we'll use the IDs to match our data and create a spreadsheet with only our records and the average temperatures from each month in the occurrence year.
+
+```{r}
+subsetted_data <- all_data[all_data$ID2 == clean_dates$ID2 & all_data$ID1 == clean_dates$ID1 & all_data$Year == clean_dates$year & all_data$Latitude == clean_dates$lat & all_data$Elevation == clean_dates$el,c(1:6,31:42)]
+merged_data <- merge(subsetted_data, clean_dates, by.x = c("Year", "Latitude", "Elevation", "ID1", "ID2"), by.y = c("year", "lat", "el", "ID1", "ID2"))
+final_data <- merged_data[,c(4:6,2:3,20,7:18)]
+```
+<img src="https://lh3.googleusercontent.com/znJ6HU9Wn_W_9PSWco3uOEZQRhyxJHJb_qB7KMgwaHANM9utEVIAXsQUR-tChjmNefmqk979b6KcL5XPVA7YqIcEZxPlKLLp8tyqO3Rg4JayVpfVPLqEw_ethmy1xYPrewvzmRmfWewQAS1JtL4jt8iXek9EFi1NaXmQ0-2H7cu8i_2lMSPxVW84CUv0oDVHiZ3irc7crtkYbcKvOcnB8jFg76pON4ix1-O3bN7wILmdAad4LRz0KOzjxZQVxSbHXpwEMYqVkPVLW1EH4vqwnuTiqTPsEX7_55EWbcyV5P9LZnV-i2TFVluj38XJHRPiQHtKZrXPT0NnQDdH2LR2fd0JvKUlkGih3Thz-_0hwPvkbp-nsOubZ_zNpD73-FjHdU3FbRgPaCuGg_mlh0o_PtWkNWLXnNgQbtHEMgmKNzF_1toFczbvwwGm_suaJ1JvfIf80rQw1FLhvOs2p4WYs16eDVWH9xE_5wZVHR7ctkZgLP3vWPlSQki0pES6S6PkloDXWaBDU3V5I4jewveYQ-dMV98JV2HGsaDHI9gZJuV3JoPJTYCvzezcq3uOWcdLTU0jsh0ntVMiSQmp9fSxuTD37uaY7xRmy6W8xt8=w2342-h506-no">
