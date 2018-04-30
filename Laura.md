@@ -136,8 +136,34 @@ clean_dates$year <- format(as.Date(clean_dates$date, format = "%Y-%m-%d"), "%Y")
 Next we'll use the IDs to match our data and create a spreadsheet with only our records and the average temperatures from each month in the occurrence year.
 
 ```{r}
-subsetted_data <- all_data[all_data$ID2 == clean_dates$ID2 & all_data$ID1 == clean_dates$ID1 & all_data$Year == clean_dates$year & all_data$Latitude == clean_dates$lat & all_data$Elevation == clean_dates$el,c(1:6,31:42)]
+subsetted_data <- all_data[all_data$ID2 == clean_dates$ID2 & all_data$ID1 == clean_dates$ID1 & all_data$Year == clean_dates$year & all_data$Latitude == clean_dates$lat & all_data$Elevation == clean_dates$el,c(1:30,43:54)]
 merged_data <- merge(subsetted_data, clean_dates, by.x = c("Year", "Latitude", "Elevation", "ID1", "ID2"), by.y = c("year", "lat", "el", "ID1", "ID2"))
-final_data <- merged_data[,c(4:6,2:3,20,7:18)]
+final_data <- merged_data[,c(4:6,2:3,44,7:42)]
+write.csv(final_data, "hemaris-final-data.csv", row.names = F)
 ```
-<img src="https://lh3.googleusercontent.com/znJ6HU9Wn_W_9PSWco3uOEZQRhyxJHJb_qB7KMgwaHANM9utEVIAXsQUR-tChjmNefmqk979b6KcL5XPVA7YqIcEZxPlKLLp8tyqO3Rg4JayVpfVPLqEw_ethmy1xYPrewvzmRmfWewQAS1JtL4jt8iXek9EFi1NaXmQ0-2H7cu8i_2lMSPxVW84CUv0oDVHiZ3irc7crtkYbcKvOcnB8jFg76pON4ix1-O3bN7wILmdAad4LRz0KOzjxZQVxSbHXpwEMYqVkPVLW1EH4vqwnuTiqTPsEX7_55EWbcyV5P9LZnV-i2TFVluj38XJHRPiQHtKZrXPT0NnQDdH2LR2fd0JvKUlkGih3Thz-_0hwPvkbp-nsOubZ_zNpD73-FjHdU3FbRgPaCuGg_mlh0o_PtWkNWLXnNgQbtHEMgmKNzF_1toFczbvwwGm_suaJ1JvfIf80rQw1FLhvOs2p4WYs16eDVWH9xE_5wZVHR7ctkZgLP3vWPlSQki0pES6S6PkloDXWaBDU3V5I4jewveYQ-dMV98JV2HGsaDHI9gZJuV3JoPJTYCvzezcq3uOWcdLTU0jsh0ntVMiSQmp9fSxuTD37uaY7xRmy6W8xt8=w2342-h506-no">
+<img src="https://lh3.googleusercontent.com/VXjLdawm5OsbJnL8cWqtcBWT8E0nJeN9ALSG97n4rCKxEZKniG3ptAcy5sA5ryNh4CcDOdEkFXaLqW0xZnHYvJ-Fps9S0-vXRJPtzj1YIGbPlSzcrRMvkcUUlMsM_CVMSZBvH9c9QuMWjXJH2ggZwQ_EhcBsLYvSaU7D8BEua63VAD87KxOMPYvaqsNuFa11YL8VE7CtLDvKCJgEq5pORB5-IkvJmeQd6LuxGiM28Sb9TyyL1rnyc79gYrxioNeDYdTG7YmGROQ1YxMCjRGOT9o9R7dhtdGhN9H4rn5ly3wyVKpGO5mpsxKjJU3kSWsx4lO9rLaBNwX6922xWFGiVNbRcHzp5Aa92MvfjSWNyz59-iugjsvwpI7ns_oKxoih2wFXte1rhP3ZrjXAhvzhRDL6Vl2nzlRpmxIkQncEK5J3A0k0EhH4pNSKki7i1aQWspPhjLiQnVF_kWrJh9ixVxrHD54pkzFVpfRRYR39WJa4v7zq_KeiCa2Cc-_yZuxQ0Bgizlud7u02EnjrrCQf0zTK9x06qVlmEeaflVohvXASYge3Ltmy_w69j6EbJV8dAECU54tzwvjcyK-UZUwltDD8CLe-671PqQEckcc=w2342-h486-no">
+
+Now, let's use the biovars function from the dismo package to create bioclimatic variables for each of our occurrences.
+
+```{r}
+x = 1
+iterations = 14
+variables = 19
+biovarsoutput <- matrix(ncol=variables, nrow=iterations)
+repeat {
+occ <- as.numeric(hemaris_final_data[x,7:42])
+tmax <- occ[1:12]
+tmin <- occ[13:24]
+precip <- occ[25:36]
+biovarsoutput[x,] <- biovars(precip, tmin, tmax)
+x = x+1
+if (x == 14) {
+break
+}}
+biovarsoutput <- as.data.frame(biovarsoutput)
+names(biovarsoutput) <- c("bio1", "bio2", "bio3", "bio4", "bio5", "bio6", "bio7", "bio8", "bio9", "bio10", "bio11", "bio12", "bio13", "bio14", "bio15", "bio16", "bio17", "bio18", "bio19")
+View(biovarsoutput)
+write.csv(biovarsoutput, "hemaris_biovarsoutput.csv", row.names = F)
+```
+
+**Congratulations!** You have created your own customized bioclimatic variables for each occurrence that can be used in modeling.
