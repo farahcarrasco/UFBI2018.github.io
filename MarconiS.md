@@ -25,6 +25,7 @@ In this module we will learn to use LiDAR and hyperspectral data to automaticall
   9. `lidR`
   10. `FactorMineR`
   11. `caret`
+
 4. We suggest you to have the libraries `rlas` and `lidR` installed from latest version on github. 
 
 
@@ -364,6 +365,7 @@ y_test <- factor(test_set$species_id)
 ```{r}
 pred_test <- predict(model_svm, newdata = x)
 plot(y_test, pred_test, pch=4)
+confusionMatrix(y_test, pred_test)
 ```
 ![untuned_test_svm](figures/test_svm.png)
 
@@ -379,6 +381,7 @@ See? performance naturally go lower on independent data!
 pred_best_mod_test <- predict(best_mod, newdata = x)
 length(pred_best_mod_test)
 plot(y_test, pred_best_mod_test, pch=4)
+confusionMatrix(y_test, pred_best_mod_test)
 ```
 ![tuned_test_svm](figures/test_cv_svm.png)
 
@@ -418,13 +421,34 @@ frequency <- t(frequency)
 colnames(frequency) <- frequency[1,]
 frequency <- frequency[-1,]
 ```
+Remember, order in this case matters! you can end up comparing different trees if you don't check how the labels are ordered in your observed vs modeled sets.
+```{r}
+test_data$crown_id
+prob_vector_test$crown_id
+test_data<-test_data[order(test_data$crown_id),]
+```
+
 Finally let's see: how good is our model in getting individual tree crowns classification?
 ```{r}
-majority_class <- apply(confusion,1, which.max)
-majority_class <- colnames(confusion)[majority_class]
+majority_class <- apply(frequency,1, which.max)
+majority_class <- colnames(frequency)[majority_class]
 svm_accuracy = sum(test_data$species_id == majority_class)/length(test_data$species_id)
 svm_accuracy
 
-# [1] 0.5081967
+# [1] 0.8032787
 ```
-Weeeell, we were expecting more, right? Yet, there is a bunch of other cool stuff you can do to make it better, like reduce the amount of predictors by performing PCA, normalize the variance of our predictors, or even chose a more promising algorithm! Now you have the data: you can play to find a better solution than this baseline! 
+Weeeell you see? crowns based predictions boost up our rank-1 accuracy a lot, right? Yet, there is a bunch of other cool stuff you can do to make it better, like reduce the amount of predictors by performing PCA, normalize the variance of our predictors, or even chose a more promising algorithm! Now you have the data: you can play to find a better solution than this baseline! 
+
+Last piece of details: try to calculate the confusion matrix:
+```{r}
+confusionMatrix(test_data$species_id, majority_class)
+```
+it returns `Error: `data` and `reference` should be factors with the same levels.`
+Why is that? well, for once, in your R experience, factors are good! it is not clear to the computer how to treat these characters, hence it needs it to be factorized. However, it is important to make sure the labels and their order is the right one. To do so, specify the labels to be the species in the **training** set:
+
+```{r}
+crowns_observed_factor <- factor(test_data$species_id, levels = sort(unique(test_data$species_id)))
+crowns_predicted_factor <- factor(majority_class, levels = sort(unique(test_data$species_id)))
+caret::confusionMatrix(crowns_observed_factor, crowns_predicted_factor)
+plot(crowns_observed_factor, crowns_predicted_factor)
+```
