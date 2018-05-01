@@ -33,7 +33,7 @@ Next, set a working directory.
 setwd("your_directory_file_path")
 ```
 
-We need to create two functions. the first is a function to capitalize the first letter of a character string. This will come in handy for formatting species names later. The second is a function that cleans up the output of our taxonomic name resolution service and returns a simple vector of names.
+We need to create two functions. The first is a function to capitalize the first letter of a character string. This will come in handy for formatting species names later. The second is a function that cleans up the output of our taxonomic name resolution service and returns a simple vector of names.
 
 ```{r}
 firstup <- function(x) {
@@ -82,10 +82,8 @@ species = c("Epidendrum arachnoides",
             "Epidendrum nocturnum",
             "Epidendrum ciliaris")
 
-name_query = tnrs(species,
-                  source = "iPlant_TNRS")
-
-name_query
+(name_query = tnrs(species,
+                   source = "iPlant_TNRS"))
 ```
 
 ``tnrs`` gives you some pretty useful information. In addition to the names. The match score can be used to filter out cases where it can only match the genus name (score <= 50%). In our example the matches are of good quality (> 90%). The names we will use for database queries are the accepted names. Our function ``post_tnrs`` would replace any questionable accepted names with the matched name or submitted name (in that order), as well as restoring the input order.
@@ -185,7 +183,7 @@ occ_total = data.frame(name = raw$name,
 Now, let's find out how many records we obtained for each species
 
 ```{r}
-table(occ_total$name)
+(init_species_table = table(occ_total$name))
 ```
 
 We finally have a perfectly usable raw data set. Now, the hard part...
@@ -226,7 +224,7 @@ duplicates = duplicated(occ_total[,c("name", "longitude", "latitude")])
 occ_total = occ_total[!duplicates,]
 ```
 
-Note that this code will remove records taken from exactly the same location, but on different dates. This would be appropriate for a niche modeling approach (subsequent sampling would be redundant from a modeling perspective), but not necessarily appropriate for other uses where sampling history is importance.
+Note that this code will remove records taken from exactly the same location, but on different dates. This would be appropriate for a niche modeling approach (subsequent sampling would usually be redundant from a modeling perspective), but not necessarily appropriate for other uses where sampling history is importance.
 
 ### Questionable records
 
@@ -265,7 +263,7 @@ country_correction = data.frame(old = bad_country_names,
                                 stringsAsFactors = F)
 ```
 
-and change those names with a vectorized ``for`` loop.
+and change those names with a ``for`` loop.
 
 ```{r}
 for(i in 1:nrow(occ_total)){
@@ -275,14 +273,14 @@ for(i in 1:nrow(occ_total)){
 }
 ```
 
-Finally, we can filter out any records with mismatched countries and lon/lat coordinates.
+Finally, we can filter out any records with mismatched countries and lon/lat coordinates (and those that are now ``NA``).
 
 ```{r}
 occ_total = occ_total[countries == occ_total$country,]
 occ_total = occ_total[!is.na(occ_total$country),]
 ```
 
-Next, we'll want to filter out any records with mis-specified records that don't fall on land. To do this, we need global maps of land and major lakes. We can download and import these maps into R with the following code.
+Next, we'll want to filter out any records with mis-located records that don't fall on land. To do this, we need global maps of land and major lakes. We can download and import these maps into R with the following code.
 
 ```{r}
 land_url = "www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/physical/ne_10m_land.zip"
@@ -303,7 +301,7 @@ land = readOGR("ne_10m_land")
 lakes = readOGR("ne_10m_lakes")
 ```
 
-We can check the lon/lat coordinates of our occurrences against these maps to make sure the none of our orchid records came from dubious aquatic locations (if you were searching for shark occurrences, you would do the opposite, obviously).
+We can check the lon/lat coordinates of our occurrences against these maps to make sure the none of the records came from dubious aquatic locations (if you were searching for shark occurrences, you would do the opposite, obviously).
 
 First, we need to make convert our coordinates into a ``SpatialPoints`` object with the same projection as our maps...
 
@@ -324,7 +322,7 @@ occ_total = occ_total[(!is.na(over_land[,1])) & (is.na(over_lakes[,1])),]
 
 This method of spatial filtering is incredibly useful. In addition to checking points against maps of land, you can check points against maps of specific countries or municipal boundaries, soil maps, maps of research plots, maps of previously glaciated areas, etc.
 
-We've done just about everything we can without looking at the points visually to identify obvious outliers. Hopefully, there aren't any, but lets plot our points on the map to make sure.
+We've done just about everything we can without looking at the points visually to identify obvious outliers. Lets plot our points on a map to check.
 
 ```{r}
 par(mar = c(0,0,0,0))
@@ -361,7 +359,7 @@ bad_words = c("greenhouse", "invernadero", "estufa",
               "garden", "jardin", "jardim", "university",
               "universidad", "universidade")
 
-bad_words = c(bad_words, firstup(bad_words))
+bad_words = c(bad_words, firstup(bad_words)) 
 
 occ_total[grepl(paste(bad_words,
                       collapse = "|"),
@@ -384,10 +382,9 @@ bad_words = c(bad_words, firstup(bad_words))
 occ_total[grepl(paste(bad_words,
                       collapse = "|"),
                 occ_total$locality), c("locality")]
-
 ```
 
-Great, there's always one. Add it to the list and remove!
+There's always one. Add it to the list and remove!
 
 ```{r}
 bad_locals = c(bad_locals, occ_total$key[grepl("cinema",occ_total$locality)])
@@ -395,4 +392,11 @@ bad_locals = c(bad_locals, occ_total$key[grepl("cinema",occ_total$locality)])
 occ_total = occ_total[!(occ_total$key %in% bad_locals),]
 ```
 
-All of this underscores the importance of manually looking at locality data (when possible). Many points will pass all of our previous cleaning steps, look fine on a map, and still come from unnatural or dubious environments. For relatively small datasets like this one, it's actually feasible to look at all of the locality information (with the help of Google Translate). For larger datasets, this level of scrutiny would not be worthwhile.
+All of this underscores the importance of manually looking at locality data when possible. Many points will pass all of our previous cleaning steps, look fine on a map, and still come from unnatural or dubious environments. For relatively small datasets like this one, it's actually feasible to look at all of the locality information (with the help of Google Translate). For larger datasets, this level of scrutiny would not be worthwhile.
+
+Finally, lets compare the number of occurrences from our initial query to the number in our final dataset.
+
+```{r}
+final_species_table = table(occ_total$name)
+init_species_table; final_species_table
+```
