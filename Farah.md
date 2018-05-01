@@ -165,7 +165,7 @@ projection(Site3.5km)
 
 The shape file does not have any projection
 
-To fix this,we first adjust the coordinate system.
+To fix this, we first adjust the coordinate system.
 Since the shape file was generate under longitude and latitude coordinate system we use that one. We indicate the datum too.
 
 ```{r}
@@ -183,6 +183,7 @@ projection(Site3.5km)
 In order to have an exact correspondence between the polygon and the raster map, we assigned the coordinate system and projection from the raster to the polygon.
 
 ```{r}
+projection(rasterFINAL)
 spgeo <- spTransform(Site3.5km,CRS("+proj=utm +zone=18 +south +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")) 
 ```
 
@@ -212,9 +213,10 @@ Add the polygon to the raster
 plot(spgeo, add = T, border="black")
 ```
 
-To have a better visualization of the area, we crop the map to a smaller extent creating an object of similar extension to the polygon
+To have a better visualization of the area, we crop the map to a smaller extent using as reference the shapefile creating an object of similar extension to the polygon
 
 ```{r}
+plot(spgeo, axes=T) 
 section = extent(1134000, 1148000, 8640000, 8652000) 
 cropMap <- crop(rasterFINAL, section) 
 plot(cropMap)
@@ -226,15 +228,6 @@ To crop and plot the raster in the shape of the polygon
 rr <- mask(cropMap,spgeo)
 plot(rr)
 plot(spgeo,add=TRUE)
-```
-For changing the legend values from 1-2, to 0-1
-
-```{r}
-forest<-rr
-values(forest)<-0 
-forest[rr==2]<-1
-rr<-forest
-plot(rr)
 ```
 
 ![raster5km](figures/raster5km.png)
@@ -368,12 +361,14 @@ as.matrix(table(values(rr)))
 classSite<-ClassStat(rr)
 ```
 
-Total.area 2699191
+total.area for the forest class= =2699191
 But we need to multiply it by the size of each cell: 25m2
 
 ```{r}
 forestarea<-2699191*25
 ```
+Forest cover area = 67479775m2 or 67.48km2
+
 
 For changing the legend values from 1-2, to 0-1
 ```{r}
@@ -405,70 +400,58 @@ library(rgdal)
 ```
 
 
-Upload the raster map
+Using previous raster map
+
 ```{r}
-rasterSanMartin<-raster("rasterascii_sanmartin.txt", resolution=30)
+cropSite
+```
+
+If you missed the map you can run it again:
+
+```{r}
+NDVI <- raster("~/Documents/PhD.Dissertation/Campo2017/Maps&Imagenes/NDVI_20160719.tif")
+as.matrix(table(values(NDVI))) 
+classification<-matrix(NA, 256,4)
+classification[,1]<-c(0:255)
+classification[,2]<-c(rep("NN",256))
+classification[,3]<-c(rep(3,4), rep(1,115), rep(2,137))
+classification[,4]<-c(rep("NoData",4), rep("NoForest",115), rep("Forest",137))
+colnames(classification)<-c("Landcover","Description","ChangeTo", "Description2")
+classification<-as.data.frame(classification) 
+str(classification)
+classification[,1]<-as.numeric(as.character(classification[,1]))
+classification[,3]<-as.numeric(classification[,3])
+class<-classification[,c(1,3)]
+
+rasterFINAL<-reclassify(NDVI,rcl=class)
+
+CorridorMap = extent(480000, 493000, 8648000, 8660000) 
+cropSite <- crop(rasterFINAL, CorridorMap) 
 ```
 
 Plot the map
 
 ```{r}
-plot(rasterSanMartin) 
-```
-
-Transforming data into table
-
-```{r}
-as.matrix(table(values(rasterSanMartin))) 
-```
-
-To know the classes
-
-```{r}
-SM.class<-ClassStat(rasterSanMartin) 
-SM.class$class
-```
-
-##Reclassify 
-
-Forest + Secondary vegetation = Forest
-Cleared matrix + road = Matrix
-
-We create a table with the old classes and the new classes.
-
-```{r}
-classification<-matrix(NA, 4,4)
-classification[,1]<-c(0,1,2,3)
-classification[,2]<-c("Matrix", "Forest","Secondary vegetation","Road")
-classification[,3]<-c(1,2,2,1)
-classification[,4]<-c("Matrix","Forest","Forest","Matrix")
-colnames(classification)<-c("Landcover","Description","ChangeTo", "Description2")
-classification<-as.data.frame(classification) 
-class<-classification[,c(1,3)]
-```
-
-Ploting the reclassified map
-
-```{r}
-rasterFINAL<-reclassify(rasterSanMartin,rcl=class)
-plot(rasterFINAL)
+plot(cropSite) 
 ```
 
 To change the legend values from 1-2, to 0-1
 
 ```{r}
-forest<-rasterFINAL
+plot(cropSite)
+forest<-cropSite
 values(forest)<-0 
-forest[rasterFINAL==2]<-1
-plot(forest)
+forest[cropSite==2]<-1
+cropSite<-forest
+plot(cropSite)
 ```
 
 Ploting points
 
 ```{r}
-sites<-read.table("matrix.stream.txt",header=TRUE)
-plot(forest)
-points(sites$Longitude, sites$Latitude, col="black", cex=0.5,pch=19)
+sites<-read.csv("Sites30APR18.csv", header=TRUE)
+sites<-sites[3,]
+points(sites$Easting, sites$Northing, col="black", cex=0.5,pch=19)
 ```
 
 ## Moving window procedure
@@ -476,53 +459,45 @@ points(sites$Longitude, sites$Latitude, col="black", cex=0.5,pch=19)
 
 #### Five cells
 
-Each cell in this raster has 30 m at each side
+Each cell in this raster has 5 m at each side
 
 nc= number of columns, nr=number of rows. 
 
-If nc = 5 and nr = 5, the window will have 150 m at each side
+If nc = 5 and nr = 5, the window will have 25 m at each side
 
 ```{r}
-radio5<-focal(forest,w=matrix(1,nr=5,nc=5))
-plot(forest,main="Forest vs Matrix")
+radio5<-focal(cropSite,w=matrix(1,nr=5,nc=5))
+plot(cropSite,main="Forest vs Matrix")
 plot(radio5,main="Moving Window")
-points(sites$Longitude, sites$Latitude, col="black", cex=0.5,pch=19)
+points(sites$Easting, sites$Northing, col="black", cex=0.5,pch=19)
 ```
 
 To extract the value for the raster in the selected window at each of our points 
 
 ```{r}
-xy<-sites[,c(2:3)]
+xy<-rep(NA,1)
+xy<-as.data.frame(xy)
+xy[1,1]<-sites[1,6]
+xy[1,2]<-sites[1,5]
+
 background.cov5<-extract(x=radio5, y=xy) 
 ```
-
-This is going to provide how many of the 25 cells (5x5 window) surrounding the point have forest
-
-Since each cell has 30m per side, each cell has an area of 900m2
-
-```{r}
-areaaround1<-900*background.cov5[1]
-areaaround3<-900*background.cov5[3]
-
-```
-Area surrounding site 1 in a window of 5 cells (150m per side) = 22500
-Area surrounding site 3 in a window of 5 cells (150m per side) = 18000
+The raster value at the site 3 in a window of 5 cells (25m per side) is 13
 
 #### Eleven cells
 
 ```{r}
-radio11<-focal(forest,w=matrix(1,nr=11,nc=11))
-plot(forest,main="Forest vs Matrix")
+radio11<-focal(radio5,w=matrix(1,nr=11,nc=11))
+plot(cropSite,main="Forest vs Matrix")
 plot(radio11,main="Moving Window")
-points(sites$Longitude, sites$Latitude, col="black", cex=0.5,pch=19)
-xy<-sites[,c(2:3)]
-background.cov11<-extract(x=radio11, y=xy)
-```
-Since each cell has 30m per side, each cell has an area of 900m2
+points(sites$Easting, sites$Northing, col="black", cex=0.5,pch=19)
 
-```{r}
-areaaround1<-900*background.cov11[1]
-areaaround3<-900*background.cov11[3]
+xy<-rep(NA,1)
+xy<-as.data.frame(xy)
+xy[1,1]<-sites[1,6]
+xy[1,2]<-sites[1,5]
+
+background.cov11<-extract(x=radio11, y=xy) 
 ```
-Area surrounding site 1 in a window of 11 cells (330m per side) = 108900
-Area surrounding site 3 in a window of 11 cells (330m per side) = 36000
+
+The raster value at the site 3 in a window of 11 cells (55m per side) is 63
