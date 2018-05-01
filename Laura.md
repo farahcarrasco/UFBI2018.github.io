@@ -155,7 +155,7 @@ iterations = 14
 variables = 19
 biovarsoutput <- matrix(ncol=variables, nrow=iterations)
 repeat {
-occ <- as.numeric(hemaris_final_data[x,7:42])
+occ <- as.numeric(final_data[x,7:42])
 tmax <- occ[1:12]
 tmin <- occ[13:24]
 precip <- occ[25:36]
