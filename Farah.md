@@ -227,6 +227,15 @@ rr <- mask(cropMap,spgeo)
 plot(rr)
 plot(spgeo,add=TRUE)
 ```
+For changing the legend values from 1-2, to 0-1
+
+```{r}
+forest<-rr
+values(forest)<-0 
+forest[rr==2]<-1
+rr<-forest
+plot(rr)
+```
 
 ![raster5km](figures/raster5km.png)
 
@@ -366,6 +375,15 @@ But we need to multiply it by the size of each cell: 25m2
 forestarea<-2699191*25
 ```
 
+For changing the legend values from 1-2, to 0-1
+```{r}
+forest<-rr
+values(forest)<-0 
+forest[rr==2]<-1
+rr<-forest
+plot(rr)
+```
+
 ![NDVI5km](figures/NDVI5km.png)
 
 
@@ -455,6 +473,7 @@ points(sites$Longitude, sites$Latitude, col="black", cex=0.5,pch=19)
 
 ## Moving window procedure
 
+
 #### Five cells
 
 Each cell in this raster has 30 m at each side
@@ -464,9 +483,9 @@ nc= number of columns, nr=number of rows.
 If nc = 5 and nr = 5, the window will have 150 m at each side
 
 ```{r}
-radio3<-focal(forest,w=matrix(1,nr=5,nc=5))
+radio5<-focal(forest,w=matrix(1,nr=5,nc=5))
 plot(forest,main="Forest vs Matrix")
-plot(radio3,main="Moving Window")
+plot(radio5,main="Moving Window")
 points(sites$Longitude, sites$Latitude, col="black", cex=0.5,pch=19)
 ```
 
@@ -474,16 +493,36 @@ To extract the value for the raster in the selected window at each of our points
 
 ```{r}
 xy<-sites[,c(2:3)]
-background.cov3<-extract(x=radio3, y=xy) 
+background.cov5<-extract(x=radio5, y=xy) 
 ```
 
-#### Six cells
+This is going to provide how many of the 25 cells (5x5 window) surrounding the point have forest
+
+Since each cell has 30m per side, each cell has an area of 900m2
 
 ```{r}
-radio6<-focal(forest,w=matrix(1,nr=11,nc=11))
+areaaround1<-900*background.cov5[1]
+areaaround3<-900*background.cov5[3]
+
+```
+Area surrounding site 1 in a window of 5 cells (150m per side) = 22500
+Area surrounding site 3 in a window of 5 cells (150m per side) = 18000
+
+#### Eleven cells
+
+```{r}
+radio11<-focal(forest,w=matrix(1,nr=11,nc=11))
 plot(forest,main="Forest vs Matrix")
-plot(radio6,main="Moving Window")
+plot(radio11,main="Moving Window")
 points(sites$Longitude, sites$Latitude, col="black", cex=0.5,pch=19)
 xy<-sites[,c(2:3)]
-background.cov6<-extract(x=radio6, y=xy)
+background.cov11<-extract(x=radio11, y=xy)
 ```
+Since each cell has 30m per side, each cell has an area of 900m2
+
+```{r}
+areaaround1<-900*background.cov11[1]
+areaaround3<-900*background.cov11[3]
+```
+Area surrounding site 1 in a window of 11 cells (330m per side) = 108900
+Area surrounding site 3 in a window of 11 cells (330m per side) = 36000
