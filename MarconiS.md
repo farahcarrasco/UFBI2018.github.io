@@ -24,6 +24,7 @@ In this module we will learn to use LiDAR and hyperspectral data to automaticall
   8. `rlas`
   9. `lidR`
   10. `FactorMineR`
+  11. `caret`
 4. We suggest you to have the libraries `rlas` and `lidR` installed from latest version on github. 
 
 
@@ -103,6 +104,9 @@ ch3 = image_rgb@layers[[3]]
 ch1[ch1 >10000] = 0 
 ch2[ch2 >10000] = 0 
 ch3[ch3 >10000] = 0 
+ch1 = stretch(ch1)
+ch2 = stretch(ch2)
+ch3 = stretch(ch3)
 ```
 
 Now, let's reclassify three new channels, so that they have the information about the color intensity in our composite RGB
@@ -116,10 +120,10 @@ las@data <- las@data[!is.na(las@data$R)]
 And now, the magic! let's colorize our point-cloud with the three channels just realized!
 
 ```{r}
-lascolor(las)
+lascolor(las, nbits = 8)
 plot(las, color = "color")
 ```
-![classified_las](figures/lidar_perspective.png)
+![classified_las](figures/lidar_false_color.png)
 
 
 ### Create a Canopy Height Model 
@@ -151,15 +155,14 @@ plot(chm)
 Now, let's try to apply a crown delineation algorithm (Silva et al., 2016). First of all we will need to look for the highest points, which will represent the top of our trees. Let's look at what are the parameters involved:
 
 ```{r}
-?tree_detection
 ttops = tree_detection(chm, 5, 2)
 ```
 
 5 and 2 seem a reasonable way to go, for this case. At this point we can predict our crowns' shape!
 
 ```{r}
-crowns <-lastrees_silva(las, chm, ttops, max_cr_factor = 0.6, exclusion = 0.3, extra = T)
-plot(crowns)
+crowns <-lastrees_silva(las, chm, ttops, max_cr_factor = 0.6, exclusion = 0.5, extra = T)
+plot(crowns, col = random.colors(length(crowns)))
 ```
 ![crowns](figures/itcs_1km.png)
 
@@ -215,6 +218,7 @@ library(dplyr)
 library(e1071)
 library(tidyr)
 library(FactoMineR)
+library(caret)
 ```
 
 Now, let's load some data extracted already in a csv form. These data have the crown identifier, the species, tree height, and spectral reflectance in 426 bands for a bunch of pixels (and 305 individual trees). Data are publicly available as part of a data science competition (Marconi et al., in prep). The whole dataset can be downloaded at: LINK, but for the sake of this workshop, just use the data in the inputs folder. 
@@ -313,6 +317,8 @@ Now, let's see what our model has memorized in his algorithm!
 pred_train <- predict(model_svm, data = x)
 #Plot the predictions and the plot to see our model fit
 plot(y, pred_train)
+confusionMatrix(y, pred_train)
+
 ```
 ![untuned_train_svm](figures/train_svm.png)
 
@@ -334,6 +340,8 @@ svm_tune <- tune(svm, train.x = x, train.y = y, gamma = 2^(-1:1), cost = 2^(2:4)
 best_mod <- svm_tune$best.model
 best_mod_pred <- predict(best_mod, data = x) 
 plot(y, best_mod_pred, pch=4)
+confusionMatrix(y, best_mod_pred)
+
 ```
 ![tuned_train_svm](figures/train_cv_svm.png)
 
@@ -355,7 +363,6 @@ y_test <- factor(test_set$species_id)
 
 ```{r}
 pred_test <- predict(model_svm, newdata = x)
-length(pred_test)
 plot(y_test, pred_test, pch=4)
 ```
 ![untuned_test_svm](figures/test_svm.png)
