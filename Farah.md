@@ -80,7 +80,7 @@ In order to know how many class categories the raster has we use the function "C
 The function "ClassStat" calculates the class statistics for patch types identified in a raster.
 
 ```{r}
-SM.Forest.class<-ClassStat(cropForest)
+class<-ClassStat(cropForest)
 ```
 
 In the example there are 4 classes: 1 - non-forest 2000, 2 - forest 2016, 3 - hydrography, 4 - forest loss 2001-2016
@@ -122,7 +122,28 @@ plot(rasterFINAL)
 
 Getting the metrics from reclassified raster
 ```{r}
-SM.rasterFINAL.class<-ClassStat(rasterFINAL) 
+class2<-ClassStat(rasterFINAL) 
+```
+
+Total area for class 1: 2996706
+Total area for class 2: 23683464
+
+But this needs to be multiplied by the area of each cell: 30x30m = 900 m2
+
+```{r}
+area1<-2996706*900
+area2<-23683464*900
+```
+
+We want the green to be 1 and white to be 0. 
+Changing the legend values from 1-2, to 0-1
+
+```{r}
+forest<-rasterFINAL
+values(forest)<-0 
+forest[rasterFINAL==2]<-1
+rasterFINAL<-forest
+plot(rasterFINAL)
 ```
 
 ## Estimating Forest Cover in specific areas
@@ -191,10 +212,18 @@ Add the polygon to the raster
 plot(spgeo, add = T, border="black")
 ```
 
+To have a better visualization of the area, we crop the map to a smaller extent creating an object of similar extension to the polygon
+
+```{r}
+section = extent(1134000, 1148000, 8640000, 8652000) 
+cropMap <- crop(rasterFINAL, section) 
+plot(cropMap)
+```
+
 To crop and plot the raster in the shape of the polygon
 
 ```{r}
-rr <- mask(rasterFINAL,spgeo)
+rr <- mask(cropMap,spgeo)
 plot(rr)
 plot(spgeo,add=TRUE)
 ```
@@ -210,38 +239,18 @@ as.matrix(table(values(rr)))
 ```
 
 ```{r}
-SM.classSite3.5km<-ClassStat(rr)
+classSite3.5km<-ClassStat(rr)
 ```
 
 "total.area" shows the sum of the areas (m2) of all patches of the corresponding patch type.
 Total forest area: 60765
 
-To have a better visualization, let's crop the map to a smaller extent creating an object of similar extension to the polygon
+But we need to multiply it by the size of each cell: 900m2
 
 ```{r}
-CorridorMap = extent(1134000, 1148000, 8640000, 8652000) 
+forestarea<-60765*900
 ```
-
-Now, we crop the reclassified raster to the object of similar extension to the polygon size
-
-```{r}
-cropSite <- crop(rasterFINAL, CorridorMap)
-```
-
-Ploting and drawing the raster inside the object (square)
-
-```{r}
-plot(cropSite) 
-plot(spgeo, add = T, border="black")
-```
-
-To crop the raster in the shape of the polygon (circle)
-
-```{r}
-rr <- mask(cropSite,spgeo)
-plot(rr)
-plot(spgeo,add=TRUE)
-```
+Result: 54688500m2 or 54.69km2
 
 
 # Working with NDVI 
@@ -270,9 +279,9 @@ To know the resolution of the raster
 ```{r}
 res(NDVI) 
 ```
+In this case is 5 by 5 meters
 
 To plot the raster
-In this case this is for whole country (Peru)
 
 ```{r}
 plot(NDVI) 
@@ -286,6 +295,8 @@ as.matrix(table(values(NDVI)))
 
 ## Reclassify the map
 ***
+
+Having good knowledge of the area, I defined which classes correspond to forest and to not forest 
 
 We create a table with the old classes and the new classes.
 
@@ -345,10 +356,15 @@ rr <- mask(cropSite,spgeo)
 plot(rr)
 plot(spgeo,add=TRUE)
 as.matrix(table(values(rr))) 
-SM.classSite.5km<-ClassStat(rr)
+classSite<-ClassStat(rr)
 ```
 
 Total.area 2699191
+But we need to multiply it by the size of each cell: 25m2
+
+```{r}
+forestarea<-2699191*25
+```
 
 ![NDVI5km](figures/NDVI5km.png)
 
@@ -429,7 +445,7 @@ forest[rasterFINAL==2]<-1
 plot(forest)
 ```
 
-Plotting points
+Ploting points
 
 ```{r}
 sites<-read.table("matrix.stream.txt",header=TRUE)
@@ -449,7 +465,7 @@ If nc = 5 and nr = 5, the window will have 150 m at each side
 
 ```{r}
 radio3<-focal(forest,w=matrix(1,nr=5,nc=5))
-plot(forest,main="Bosque vs Matrix")
+plot(forest,main="Forest vs Matrix")
 plot(radio3,main="Moving Window")
 points(sites$Longitude, sites$Latitude, col="black", cex=0.5,pch=19)
 ```
@@ -465,7 +481,7 @@ background.cov3<-extract(x=radio3, y=xy)
 
 ```{r}
 radio6<-focal(forest,w=matrix(1,nr=11,nc=11))
-plot(forest,main="Bosque vs Matrix")
+plot(forest,main="Forest vs Matrix")
 plot(radio6,main="Moving Window")
 points(sites$Longitude, sites$Latitude, col="black", cex=0.5,pch=19)
 xy<-sites[,c(2:3)]
