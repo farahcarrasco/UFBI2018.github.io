@@ -472,8 +472,8 @@ plot(radio5,main="Moving Window")
 points(sites$Easting, sites$Northing, col="black", cex=0.5,pch=19)
 ```
 
-To extract the value for the raster in the selected window at each of our points 
-
+To extract the raster value for that point given the moving window we created 
+ 
 ```{r}
 xy<-rep(NA,1)
 xy<-as.data.frame(xy)
