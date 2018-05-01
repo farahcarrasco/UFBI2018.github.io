@@ -145,6 +145,8 @@ write.csv(final_data, "hemaris-final-data.csv", row.names = F)
 ```
 <img src="https://lh3.googleusercontent.com/VXjLdawm5OsbJnL8cWqtcBWT8E0nJeN9ALSG97n4rCKxEZKniG3ptAcy5sA5ryNh4CcDOdEkFXaLqW0xZnHYvJ-Fps9S0-vXRJPtzj1YIGbPlSzcrRMvkcUUlMsM_CVMSZBvH9c9QuMWjXJH2ggZwQ_EhcBsLYvSaU7D8BEua63VAD87KxOMPYvaqsNuFa11YL8VE7CtLDvKCJgEq5pORB5-IkvJmeQd6LuxGiM28Sb9TyyL1rnyc79gYrxioNeDYdTG7YmGROQ1YxMCjRGOT9o9R7dhtdGhN9H4rn5ly3wyVKpGO5mpsxKjJU3kSWsx4lO9rLaBNwX6922xWFGiVNbRcHzp5Aa92MvfjSWNyz59-iugjsvwpI7ns_oKxoih2wFXte1rhP3ZrjXAhvzhRDL6Vl2nzlRpmxIkQncEK5J3A0k0EhH4pNSKki7i1aQWspPhjLiQnVF_kWrJh9ixVxrHD54pkzFVpfRRYR39WJa4v7zq_KeiCa2Cc-_yZuxQ0Bgizlud7u02EnjrrCQf0zTK9x06qVlmEeaflVohvXASYge3Ltmy_w69j6EbJV8dAECU54tzwvjcyK-UZUwltDD8CLe-671PqQEckcc=w2342-h486-no">
 
+### Using bivoars to create bioclimatic variables 
+
 Now, let's use the biovars function from the dismo package to create bioclimatic variables for each of our occurrences.
 
 ```{r}
