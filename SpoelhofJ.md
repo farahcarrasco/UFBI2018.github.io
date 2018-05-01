@@ -65,10 +65,6 @@ name_query = tnrs(species,
 name_query
 ```
 
-```{r}
-(name_query = read.csv("name_query.csv", stringsAsFactors = F))
-```
-
 ``tnrs`` gives you some pretty useful information. In addition to the names. The match score can be used to filter out cases where it can only match the genus name (score <= 50%). In our example the matches are of good quality (> 90%). The names we will use for database queries are the accepted names.
 
 ```{r}
