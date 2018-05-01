@@ -472,7 +472,7 @@ plot(radio5,main="Moving Window")
 points(sites$Easting, sites$Northing, col="black", cex=0.5,pch=19)
 ```
 
-To extract the value for the raster in the selected window at each of our points 
+To extract the raster value for that point given the moving window we created 
 
 ```{r}
 xy<-rep(NA,1)
@@ -482,7 +482,7 @@ xy[1,2]<-sites[1,5]
 
 background.cov5<-extract(x=radio5, y=xy) 
 ```
-The raster value at the site 3 in a window of 5 cells (25m per side) is 13
+The raster value at  site 3 in a window of 5 cells (25m per side) is 13
 
 #### Eleven cells
 
