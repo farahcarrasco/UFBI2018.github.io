@@ -11,9 +11,9 @@ In this module we will learn to use LiDAR and hyperspectral data to automaticall
 
 
 ### Before starting, you will need:
-1. Intermediate knowledge of R
-2. **[Download](https://drive.google.com/open?id=1UA-0TVt1V-r3hnOVi5IvIUFk7KJq9lVO)** the dataset we'll use for this lesson
-3. have the following libraries installed:
+* Intermediate knowledge of R
+* **[Download](https://drive.google.com/open?id=1UA-0TVt1V-r3hnOVi5IvIUFk7KJq9lVO)** the dataset we'll use for this lesson
+* have the following libraries installed:
   1. `raster`
   2. `rgdal`
   3. `readr`
@@ -23,10 +23,10 @@ In this module we will learn to use LiDAR and hyperspectral data to automaticall
   7. `devtools`
   8. `rlas`
   9. `lidR`
-  10. `FactorMineR`
+  10. `FactoMineR`
   11. `caret`
 
-4. We suggest you to have the libraries `rlas` and `lidR` installed from latest version on github. 
+* We suggest you to have the libraries `rlas` and `lidR` installed from latest version on github. 
 
 
 #### Delineation from LiDAR module:
