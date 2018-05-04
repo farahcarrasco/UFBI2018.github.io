@@ -92,6 +92,8 @@ Let's first load our data as a raster stack. Raster stack are way faster than co
 ```{r}
 hps   = stack(paste(pt, f_hps, sep =""))
 plotRGB(hps, r=16, g=177, b=86, stretch="lin")
+image_rgb <- stack(hps[[86]], hps[[177]],hps[[16]])
+
 ```
 
 ![false_color_hps](figures/false_color_hsp.png) 
