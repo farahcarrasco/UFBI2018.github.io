@@ -239,7 +239,7 @@ speciesID <- read_csv("./inputs/classification/species_id_train.csv")
 We can look now at the reflectance spectra of a pixel:
 
 ```{r}
-species <- unique(speciesID$species)
+species <- unique(speciesID$species_id)
 aPixel_spectra <- features[1,3:428]
 plot(as.numeric(aPixel_spectra), type = "l")
 ```
@@ -249,7 +249,7 @@ plot(as.numeric(aPixel_spectra), type = "l")
 As you can see, these data are far from perfect. Especially, there are some regions that are absorbing all the light, no matter which pixel are we in. Those bands are known as **water absorption bands**, and we want to get rid of them. Fortunately, they are always the same, for they depend on hte chemistry of water! We can then point to the `bad bands` and pull them out.
 
 ```{r}
-bandsMetadata <- read_csv("data/classification/hyper_bands.csv")
+bandsMetadata <- read_csv("./inputs/classification/hyper_bands.csv")
 goodBands <- which(bandsMetadata$Noise_flag==0)+2
 goodBands <- c(1:2, goodBands)
 features <- features[,goodBands]
