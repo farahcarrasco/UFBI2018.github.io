@@ -55,7 +55,7 @@ hemaris <- data[,c(3,16,17,18,21,25)]
 View(hemaris)
 ```
 
-![Image of Screen after this step](https://lh3.googleusercontent.com/mnUnNg5fV_C6jMnoCmUArq1TlP1DBFIx1eU_kiX3eTuykylqSkwNSgbLtAiOR8P29Nc-vQTDt8-nTr56wZrAq7EW0u9V9ypNgS6x5r3-OpYXutYbJnrdCzWoziT9F7kuFP8bnL80bQ44Ooy_JHQ7wmWJyZiJtYPCyBbRJcMCGbjjlwZyYxxEGZ5jSxO3Em2dOJH6wQukjmxK6mx47nh9g52PGZMzw0vjKfGjmukM_vKXaa8svfPj7S_QFI10zw1W61bx1XVAJ4gW7kFW3Znl_Y9XAC1QQ0EzQ51Hb7SYh44oeMWKKSKE9CLGiJhVwq1cMHUQWRxPw1uSlgKse9WuKZOzGq3vY7XVRN1cocEn7uz7GAwrkF3Ns9b-w0JgefNrMYsrhC8t6D9rrI0prhwmZPM2WC-6iHGYID62foMG-2O9th14b1pTzAHUQ--6TGY7_6dJo6q1mbPAeQc9OMrQdb-1b_xdymI79ACPrcn73MaQGN_jBruVWPgJFtWhSaNbktazRYLibqnMPlN08QkpGnmMmWzEN5dtTLn0IO-Gmcetgh6CqflRXUkMztXx4QnWMrFcn5ZJ_HZ6ComTwAHxGRV2X5pOIocR0rfNaOyEsr3U3LD7yZ9WrwtlwHEo1U21LCityKLqGkyAVfWOZ8PCjWDtCSUc-Ng7=w1141-h471-no)
+![Image of Screen after this step](https://ufbi2018.github.io/figures/ClimNAcleaning.png)
 
 Now we are going to clean up our 1421 records to narrow it down further. We only want occurrence records that have data in all of the fields we've specified in our search.
 
@@ -102,15 +102,15 @@ Now we are actually ready to run the ClimNA program with the data we've cleaned.
 
 At this step, it is important to open the **Hemaris-clean-dates.csv** file to check when our occurrences come from. For our particular example, the occurrences range from 1969 to 2017. Unfortunately, ClimNA only has data up until 2013. For simplicity's sake, it is best to delete the two occurrences that fall outside of ClimNA's range (shown highlighted in the image below).
 
-<img src="https://lh3.googleusercontent.com/UOmsIJlNdTqS11s8StRXy6y2ko57K1_QEixSPxBy_218U_58fJ1DnH7o4MyZodqnmj5oEm2F4i3m_2-t5FjLj_CaYXSRczKcHxAW9r4kZJHa4OzEsTPMcZjoqMNAKKWsy9-OBjZGI7rA4Ufi_0U5Obe-7s6mALNMpcWNLmGPURYvqoXYwHONscxM-YQcKqdqYGKXry38boVMo9ajCCLcLZSGIzZWM5SRwO2kM7jNImWftUv8WaIskPWpHv2Dh8Pk52Tet8AaDR2YpdKO3Q0AwdL3n6VWifxBooVSTqBNXjk9KG82JfcCAr9prqA-dO6cWSRE6N0hjkIQoNp77GRzyoqK6f7id3QfEuzSDRJpJbioDRaMZKTY5CnStqDRET3AENPS6lgp7fIzGJYKOHQnVXhTYcyNT-ewI8lqlBLRPM4CfhR1HRWb7E1amriJF0iYt4fMPzeSrZdFsF6-3rcL6H51SKgd6OIJ4cNSrSSygQyvKanAgwn-OhL_iBrnkKR2OC7G9t82RpccCT-i0kAqXRJslO02Ppmi9HW-D9kZITng8LZ0EOG9l0ogelCax_2V1f3WeplM2-Qx_7IRgV2x-JJDQEdPW6kGa7YVBZI=w1130-h1134-no" width="550" height="330"/>
+<img src="https://ufbi2018.github.io/figures/RemoveRange.png" width="550" height="330"/>
 
 Note the ID1 and ID2 for these records, and delete them from the **Hemaris-ClimNA.csv** file and save it. You will need to save a blank spreadsheet as a .csv file for your output from ClimNA. Fill out the ClimNA interface with the appropriate input, output, and year range. We will discuss more about these options in the workshop. Click "Calculate TS".
 
-<img src="https://lh3.googleusercontent.com/ZHs7WN852ouV-Wme6ZJl6FraQWwjlZ4OIBwwgLtrdiWZYa25-CHQMxFQHe1aPJCGPB_prpOKLcSPVA0sR3fg-zmivgdKAGjPkh4r-YkysX2wkHUz3NF8GGxNQIfgdkmGtaiK6NVcROENF5ll2OhUrIqWxa3bHr7YY4NPmJejs9F6lOeWne-3J_Phm8xcxq08Q3faBIXoPl5o6mLuDa3Gn_tSb_-ivn6qgstxrOrr7D-hL189d7wDA-Q9bzdDMmaLNaLt0NxVDdZmC5Fo0hFJ7jW7cce_gGlRSo4-xbv0_XeuNz0IpyxIaYO9KyW4209dNVOUUCWLNvxLFwaRN8XPvcNrSO2MUhuuJBwh5dg6Sj3YquvWTBxcHjB7O8kfVCcRg6vIZjKkYs9AqGV5H4WeJo-mRo5UVJZd2fwsFpk9bkjAhd33vDu_maG6pZJZoKlXXrE5y4rxrVJBSSjqWFY_ob_fPjhr7HWRBb1437RatLogM5Sk-_LK0uMiv3NUh7kaGCGxQ4zAXoFfDDOYx-SkcSxRYtNcMcEu9Bat3BSd_-YC1jtMjWQn8-mVEBXo05PcZqVOT3hpehKFygsxe129c1zXsxfDKW8X6SpO9uE=w934-h592-no" width="430" height="450">
+<img src="https://ufbi2018.github.io/figures/ClimNAscreenshot.png" width="430" height="450">
 
 If you open your output file, it should now have data in it. Because we ran these as a time series, you'll notice that all of our occurrences now have a row of data with each variable from ClimNA for every month of every year from 1969-2013. The definitions of these climate variables can be found in the **help.rtf** ClimNA file.
 
-<img src="https://lh3.googleusercontent.com/qWuMndfkpCVQ1SEGbAs93RN7nH2AjWdBhR_0SoA7YX-rVlf9gmj7xM965HN_SwNp5MZrvI4SdCyjjB6BbXws12FZNFy27OZCxWZz9lYUjVVums-lC_JnQAUq_XshXL4aPB9IzLMqLKPHABL28z8VdMVauH7dS3AsBYPUelfvM1g5avDhAZc3rbiSd3u_kqhrn9M3eL3MBSdXYixOivd2flxDXjiLKwEQqeBEfp6OlMtUjaez8AfnPTcnMQZ9v4LvAgQoOVvVAPkOtIWZyDa4z--PlVaegQN7771o8fy74pLKvT8M5YMkb5gzmWqgGB9rTlmf551Y1VHjrxZ3KTU_A7MrsUJ8kUawnCCQc_i3i32WUkzxLjVFZJN3rQUUBBNaTHFZ3Stk5B88zAdocZ8XjVG0gS0qlBYu7eJmfvwd3FBVTRQQDrltmZ-M4WN9LQEFjq8qqQ3b2WhwAaRn_wDlLgXtagppwOJ5lKKh3Il5Y_clYtAuZ5MhlMqaR4FB2m-FItAnRg1WDF7yFHZfSmera9HAxAarCqAvEzv6yhnlicVKfse2A4-rnbqRTmeQtSVU86P908FNO7-WZPf_cjTyRIG4Uo2cL5Bn3NHmX4g=w842-h672-no" width="510" height="480">
+<img src="https://ufbi2018.github.io/figures/Monthlyvariables.png" width="510" height="480">
 
 ### Cleaning the ClimNA output
 
@@ -143,7 +143,7 @@ merged_data <- merge(subsetted_data, clean_dates, by.x = c("Year", "Latitude", "
 final_data <- merged_data[,c(4:6,2:3,44,7:42)]
 write.csv(final_data, "hemaris-final-data.csv", row.names = F)
 ```
-<img src="https://lh3.googleusercontent.com/VXjLdawm5OsbJnL8cWqtcBWT8E0nJeN9ALSG97n4rCKxEZKniG3ptAcy5sA5ryNh4CcDOdEkFXaLqW0xZnHYvJ-Fps9S0-vXRJPtzj1YIGbPlSzcrRMvkcUUlMsM_CVMSZBvH9c9QuMWjXJH2ggZwQ_EhcBsLYvSaU7D8BEua63VAD87KxOMPYvaqsNuFa11YL8VE7CtLDvKCJgEq5pORB5-IkvJmeQd6LuxGiM28Sb9TyyL1rnyc79gYrxioNeDYdTG7YmGROQ1YxMCjRGOT9o9R7dhtdGhN9H4rn5ly3wyVKpGO5mpsxKjJU3kSWsx4lO9rLaBNwX6922xWFGiVNbRcHzp5Aa92MvfjSWNyz59-iugjsvwpI7ns_oKxoih2wFXte1rhP3ZrjXAhvzhRDL6Vl2nzlRpmxIkQncEK5J3A0k0EhH4pNSKki7i1aQWspPhjLiQnVF_kWrJh9ixVxrHD54pkzFVpfRRYR39WJa4v7zq_KeiCa2Cc-_yZuxQ0Bgizlud7u02EnjrrCQf0zTK9x06qVlmEeaflVohvXASYge3Ltmy_w69j6EbJV8dAECU54tzwvjcyK-UZUwltDD8CLe-671PqQEckcc=w2342-h486-no">
+<img src="https://ufbi2018.github.io/figures/ClimNA-output.png">
 
 ### Using bivoars to create bioclimatic variables 
 
