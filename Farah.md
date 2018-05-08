@@ -18,7 +18,7 @@ Fragstats manual
 First, set a folder where you will have shapefiles and images
 
 ```{r}
-setwd("~/Documents/PhD.Dissertation/Campo2017/Maps&Imagenes/Bosque_No_Bosque_2016_Hib_Raster") 
+setwd("./Session3") 
 ```
 
 
@@ -265,13 +265,13 @@ forestarea<-60765*900
 Result: 54688500m2 or 54.69km2
 
 
-# Working with NDVI 
+# Working with NDVI (Normalize Difference Vegetation Index)
 ***
 
 Setting the folder
 
 ```{r}
-setwd("~/Documents/PhD.Dissertation/Campo2017/Maps&Imagenes/Bosque_No_Bosque_2016_Hib_Raster") 
+setwd("./Session3") 
 ```
 
 Load NDVI
