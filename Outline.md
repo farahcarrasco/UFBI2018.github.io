@@ -18,8 +18,8 @@ The two-day workshop will take place on **May 8th and 9th**, and will be divided
 | 10:45 pm -12:15 pm | Occurrence data continued - *Jon Spoelhof*  |
 | 12:15 pm - 1:15 pm  | LUNCH  |
 | 2:45 pm - 3:00 pm  | Climate data resources overview - *Laura Brenskelle*  |
-| 3:00 pm - 4:45 pm  | BREAK  |
-| 10:30 am - 10:45 pm  | Climate data hands-on examples - *Laura Brenskelle*  |
+| 3:00 pm - 3:15 pm  | BREAK  |
+| 3:15 am - 4:45 pm  | Climate data hands-on examples - *Laura Brenskelle*  |
 | 4:45 pm - 5:00 pm  | Summary for the day  |
 
 <br><br>
@@ -34,8 +34,8 @@ The two-day workshop will take place on **May 8th and 9th**, and will be divided
 | 10:45 pm -12:15 pm | Use LiDAR point-cloud data to delineate crowns - *Farah Carrasco-Rueda*  |
 | 12:15 pm - 1:15 pm  | LUNCH  |
 | 2:45 pm - 3:00 pm  | 	Species classification using NEON hyperspectral data. PART 1 - *Sergio Marconi* |
-| 3:00 pm - 4:45 pm  | BREAK  |
-| 10:30 am - 10:45 pm  | Species classification using NEON hyperspectral data PART 2 - *Sergio Marconi*  |
+| 3:00 pm - 3:15 pm  | BREAK  |
+| 3:15 am - 4:45 pm  | Species classification using NEON hyperspectral data PART 2 - *Sergio Marconi*  |
 | 4:45 pm - 5:00 pm  | FINAL REMARKS |
 
 <br><br>
