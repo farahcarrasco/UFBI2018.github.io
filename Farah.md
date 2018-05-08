@@ -397,7 +397,7 @@ plot(rr)
 
 Sources: Fragstats Manual
 
-We also can estimate the forest cover using the moving window approach. The window moves over the landscape one cell at a time, calculating the selected metric within the window and returning that value to the center cell.”(manual de fragstats)
+With the moving window approach, "a window of specific size moves over the landscape one cell at a time, calculating the selected metric within the window and returning that value to the center cell.” (Fragstats Manual)
 
 #### you will need:
 1. intermediate knowledge of R
