@@ -487,7 +487,7 @@ The raster value at the site 3 in a window of 5 cells (25m per side) is 13
 #### Eleven cells
 
 ```{r}
-radio11<-focal(radio5,w=matrix(1,nr=11,nc=11))
+radio11<-focal(cropSite,w=matrix(1,nr=11,nc=11))
 plot(cropSite,main="Forest vs Matrix")
 plot(radio11,main="Moving Window")
 points(sites$Easting, sites$Northing, col="black", cex=0.5,pch=19)
