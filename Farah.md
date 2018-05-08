@@ -4,8 +4,14 @@ title:  Forest Cover Estimation
 permalink: /Farah/
 ---
 
+This code is based in a combination of sources:
+Lanscape Ecology class SPRING 2015, University of Florida, Dr. Robert Fletcher
+Fragstats manual
+
 # Working with raster maps 
 ***
+
+
 
 ## Load Maps
 
@@ -21,6 +27,7 @@ setwd("~/Documents/PhD.Dissertation/Campo2017/Maps&Imagenes/Bosque_No_Bosque_201
 2. the following packages:
 
 ```{r}
+library(sp)
 library(raster)
 library(SDMTools) 
 library(maptools) 
@@ -32,6 +39,8 @@ library(rgdal)
 ```{r}
 Forest <- raster("Bosque_No_bosque_2016.tif") 
 ```
+You might want to download the raster information from the original source: http://geobosques.minam.gob.pe/geobosque/view/descargas.php
+
 
 To know the projection of the raster
 
@@ -87,7 +96,8 @@ In the example there are 4 classes: 1 - non-forest 2000, 2 - forest 2016, 3 - hy
 
 ## Reclassification
 ***
-We want to reclassify the raster changing 1 (non-forest 2000), 3 (hydrography), 4 (forest loss 2001-2016) = Non Forest 
+We want to reclassify the raster to have forest in 2016 and other classes transformed to non forest class.
+For this we change classes 1 (non-forest 2000), 3 (hydrography), 4 (forest loss 2001-2016) = Non Forest 
 
 We create a table with the old and new classes.
 
@@ -298,7 +308,7 @@ as.matrix(table(values(NDVI)))
 ## Reclassify the map
 ***
 
-Having good knowledge of the area, I defined which classes correspond to forest and to not forest 
+Having good knowledge of the area, I defined which classes correspond to forest and to non-forest 
 
 We create a table with the old classes and the new classes.
 
